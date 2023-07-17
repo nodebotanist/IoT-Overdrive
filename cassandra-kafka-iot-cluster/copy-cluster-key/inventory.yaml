@@ -1,0 +1,11 @@
+all:
+hosts:  
+  children:
+    managers:
+      hosts:  
+        nodebotanist-rpi4b-1:
+    workers:
+      hosts:  
+        nodebotanist-opi02-1:
+        nodebotanist-opi02-2:
+        nodebotanist-opi02-3:

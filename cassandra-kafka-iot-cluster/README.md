@@ -11,3 +11,6 @@
 - Cassandra DB
 - Kafka
 - Node.js
+
+Notes
+run with `ssh-copy-id -i /home/nodebotanist/.ssh/cluster-key.pub nodebotanist@host.ip.address`
