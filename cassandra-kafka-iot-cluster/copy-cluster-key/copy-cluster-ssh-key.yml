@@ -1,6 +1,0 @@
-tasks:
-  name: Set auth key taken from local file
-  ansible.posix.authorized_key:
-    name: cluster
-    state: present
-    key: "{{ lookup('file', '/home/nodebotanist/.ssh/cluster.pub')}}"
