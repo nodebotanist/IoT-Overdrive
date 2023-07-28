@@ -6,7 +6,13 @@
   tasks:
     - name: "Update hostname for Orange Pis"
       ansible.builtin.hostname:
-        name: "{{ ansible_hostname }}"
+        name: "{{ ansible_hostname }}.local"
+        use: "systemd"
+      when: inventory_hostname in groups['orangepi']
+    - name: "Install avahi-daemon"
+      ansible.builtin.package:
+        name: avahi-daemon
+        state: present
       when: inventory_hostname in groups['orangepi']
     - name: "Reboot Orange Pis"
       ansible.builtin.shell: sleep 2 && reboot

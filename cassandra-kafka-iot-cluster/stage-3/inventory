@@ -5,7 +5,7 @@ nodebotanist-cluster-admin.local ansible_local_connection=true
 nodebotanist-cluster-w1.local 
 nodebotanist-cluster-w2.local 
 nodebotanist-cluster-w3.local
-nodebotanist-cluster-w4.local ansible_host=192.168.132.16 aasible_become_pass=password
+nodebotanist-cluster-w4.local ansible_host=192.168.132.167
 nodebotanist-cluster-w5.local ansible_host=192.168.132.82
 nodebotanist-cluster-w6.local ansible_host=192.168.132.36
 
@@ -38,3 +38,4 @@ nodebotanist-cluster-m3.local
 
 [all:vars]
 ansible_user=ansible
+ansible_become_pass=password
