@@ -19,4 +19,38 @@
       service:
         name: sshd
         state: restarted
+    - name: Install python3
+      ansible.builtin.apt:
+        name: python3
+        state: present
+    - name: Install python3-pip
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
+    - name: Create ansible user
+      user:
+        name: ansible
+        shell: /bin/bash
+        password: "{{ 'password' | password_hash('sha512') }}"
+        groups: sudo
+        append: yes
+        state: present
+    - name: Create nodebotanist user
+      user: 
+        name: nodebotanist
+        shell: /bin/bash
+        password: "{{ 'password' | password_hash('sha512') }}"
+        groups: sudo
+        append: yes
+        state: present
+    - name: Copy ssh keys to new user ansible
+      ansible.posix.authorized_key:
+        user: ansible
+        state: present
+        key: "{{ lookup('file', '/home/pi/.ssh/id_rsa.pub') }}"
+    - name: copy ssh keys to new user nodebotanist
+      ansible.posix.authorized_key:
+        user: nodebotanist
+        state: present
+        key: "{{ lookup('file', '/home/pi/.ssh/id_rsa.pub') }}"
 ...
