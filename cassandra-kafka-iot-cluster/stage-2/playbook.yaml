@@ -1,22 +1,22 @@
 ---
 - name: Cluster stage 2- global updates
   hosts: all
-  become: yes
+  become: true
 
   tasks:
     - name: Update apt
-      ansible.builtin.apt: 
-        update_cache: yes
-    - name: apt upgrade
+      ansible.builtin.apt:
+        update_cache: true
+    - name: Upgrade apt
       ansible.builtin.apt:
         upgrade: "full"
-    - name: Disable password ssh authentication
-      lineinfile:
+    - name: Disable password ssh authentication via regex
+      ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^#?PasswordAuthentication'
         line: 'PasswordAuthentication no'
-    - name: restart ssh
-      service:
+    - name: Restart ssh service
+      anssible.builtin.service:
         name: sshd
         state: restarted
     - name: Install python3
@@ -27,28 +27,32 @@
       ansible.builtin.apt:
         name: python3-pip
         state: present
-    - name: Create ansible user
-      user:
+    - name: Install passlib with apt
+      ansible.builtin.apt:
+        name: python3-passlib
+        state: present
+    - name: Create ansible user in sudoers
+      ansible.builtin.user:
         name: ansible
         shell: /bin/bash
         password: "{{ 'password' | password_hash('sha512') }}"
         groups: sudo
-        append: yes
+        append: true
         state: present
-    - name: Create nodebotanist user
-      user: 
+    - name: Create nodebotanist user in sudoers
+      ansible.builtin.user:
         name: nodebotanist
         shell: /bin/bash
         password: "{{ 'password' | password_hash('sha512') }}"
         groups: sudo
-        append: yes
+        append: true
         state: present
     - name: Copy ssh keys to new user ansible
       ansible.posix.authorized_key:
         user: ansible
         state: present
         key: "{{ lookup('file', '/home/pi/.ssh/id_rsa.pub') }}"
-    - name: copy ssh keys to new user nodebotanist
+    - name: Copy ssh keys to new user nodebotanist
       ansible.posix.authorized_key:
         user: nodebotanist
         state: present
