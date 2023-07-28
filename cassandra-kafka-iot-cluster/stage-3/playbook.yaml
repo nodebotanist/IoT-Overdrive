@@ -1,0 +1,15 @@
+---
+- name: Phase 2 -- Hostname and user updates
+  hosts: all
+  become: true
+
+  tasks:
+    - name: "Update hostname for Orange Pis"
+      ansible.builtin.hostname:
+        name: "{{ ansible_hostname }}"
+      when: inventory_hostname in groups['orangepi']
+    - name: "Reboot Orange Pis"
+      ansible.builtin.shell: sleep 2 && reboot
+      changed_when: true
+      when: inventory_hostname in groups['orangepi']
+...
