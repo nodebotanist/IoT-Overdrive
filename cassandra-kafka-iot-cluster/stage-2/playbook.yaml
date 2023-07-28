@@ -1,0 +1,22 @@
+---
+- name: Cluster stage 2- global updates
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update apt
+      ansible.builtin.apt: 
+        update_cache: yes
+    - name: apt upgrade
+      ansible.builtin.apt:
+        upgrade: "full"
+    - name: Disable password ssh authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+    - name: restart ssh
+      service:
+        name: sshd
+        state: restarted
+...

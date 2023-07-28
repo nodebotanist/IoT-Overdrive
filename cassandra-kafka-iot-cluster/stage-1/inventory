@@ -1,23 +1,23 @@
 [admin]
-localhost
+nodebotanist-cluster-admin.local ansible_local_connection=true
 
 [workers]
-nodebotanist-cluster-w1.local
-nodebotanist-cluster-w2.local
-nodebotanist-cluster-w3.local
-nodebotanist-cluster-w4.local ansible_host=192.168.132.169
-nodebotanist-cluster-w5.local ansible_host=192.168.132.82
-nodebotanist-cluster-w6.local ansible_host=192.168.132.29
+nodebotanist-cluster-w1.local ansible_user=pi
+nodebotanist-cluster-w2.local ansible_user=pi
+nodebotanist-cluster-w3.local ansible_user=pi
+nodebotanist-cluster-w4.local ansible_host=192.168.132.167 ansible_user=orangepi
+nodebotanist-cluster-w5.local ansible_host=192.168.132.82 ansible_user=orangepi
+nodebotanist-cluster-w6.local ansible_host=192.168.132.29 ansible_user=orangepi
 
 [managers]
-nodebotanist-cluster-m1.local ansible_host=192.168.132.195
-nodebotanist-cluster-m2.local ansible_host=192.168.132.32
-nodebotanist-cluster-m3.local ansible_host=192.168.132.124
+nodebotanist-cluster-m1.local ansible_host=192.168.132.195 ansible_user=orangepi
+nodebotanist-cluster-m2.local ansible_host=192.168.132.32 ansible_user=orangepi
+nodebotanist-cluster-m3.local ansible_host=192.168.132.124 ansible_user=orangepi
 
 [appservers]
-nodebotanist-cluster-a1.local
-nodebotanist-cluster-a2.local
-nodebotanist-cluster-a3.local
+nodebotanist-cluster-a1.local ansible_user=pi
+nodebotanist-cluster-a2.local ansible_user=pi
+nodebotanist-cluster-a3.local ansible_user=pi
 
 [raspi]
 localhost
@@ -29,9 +29,9 @@ nodebotanist-cluster-a2.local
 nodebotanist-cluster-a3.local
 
 [orangepi]
-nodebotanist-cluster-w4.local ansible_host=192.168.132.169
-nodebotanist-cluster-w5.local ansible_host=192.168.132.82
-nodebotanist-cluster-w6.local ansible_host=192.168.132.29
-nodebotanist-cluster-m1.local ansible_host=192.168.132.195
-nodebotanist-cluster-m2.local ansible_host=192.168.132.32
-nodebotanist-cluster-m3.local ansible_host=192.168.132.124
+nodebotanist-cluster-w4.local
+nodebotanist-cluster-w5.local
+nodebotanist-cluster-w6.local
+nodebotanist-cluster-m1.local
+nodebotanist-cluster-m2.local
+nodebotanist-cluster-m3.local 
