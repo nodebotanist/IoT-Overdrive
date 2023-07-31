@@ -37,6 +37,7 @@ nodebotanist-cluster-m2.local
 nodebotanist-cluster-m3.local 
 
 [docker]
+nodebotanist-cluster-admin.local
 nodebotanist-cluster-m1.local
 nodebotanist-cluster-m2.local
 nodebotanist-cluster-m3.local
