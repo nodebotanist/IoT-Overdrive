@@ -5,14 +5,14 @@ nodebotanist-cluster-admin.local ansible_local_connection=true
 nodebotanist-cluster-w1.local 
 nodebotanist-cluster-w2.local 
 nodebotanist-cluster-w3.local
-nodebotanist-cluster-w4.local ansible_host=192.168.132.167
-nodebotanist-cluster-w5.local ansible_host=192.168.132.82
-nodebotanist-cluster-w6.local ansible_host=192.168.132.190
+nodebotanist-cluster-w4.local
+nodebotanist-cluster-w5.local
+nodebotanist-cluster-w6.local
 
 [managers]
-nodebotanist-cluster-m1.local ansible_host=192.168.132.195
-nodebotanist-cluster-m2.local ansible_host=192.168.132.32
-nodebotanist-cluster-m3.local ansible_host=192.168.132.124
+nodebotanist-cluster-m1.local
+nodebotanist-cluster-m2.local
+nodebotanist-cluster-m3.local
 
 [appservers]
 nodebotanist-cluster-a1.local
@@ -36,6 +36,17 @@ nodebotanist-cluster-m1.local
 nodebotanist-cluster-m2.local
 nodebotanist-cluster-m3.local 
 
+[docker]
+nodebotanist-cluster-m1.local
+nodebotanist-cluster-m2.local
+nodebotanist-cluster-m3.local
+nodebotanist-cluster-a1.local
+nodebotanist-cluster-w1.local 
+nodebotanist-cluster-w2.local
+nodebotanist-cluster-w3.local
+nodebotanist-cluster-w4.local
+nodebotanist-cluster-w5.local
+nodebotanist-cluster-w6.local
+
 [all:vars]
 ansible_user=ansible
-ansible_become_pass=password

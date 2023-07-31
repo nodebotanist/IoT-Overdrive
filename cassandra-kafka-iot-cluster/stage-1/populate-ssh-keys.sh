@@ -1,4 +1,4 @@
-for ipend in 167 124 32 195 82 29
+for ipend in 167 124 32 195 82 29 190
 do
   sshpass -f orange-pi-password.txt sudo ssh-copy-id -o StrictHostKeyChecking=no orangepi@192.168.132.${ipend}
 

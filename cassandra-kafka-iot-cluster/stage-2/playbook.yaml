@@ -16,7 +16,7 @@
         regexp: '^#?PasswordAuthentication'
         line: 'PasswordAuthentication no'
     - name: Restart ssh service
-      anssible.builtin.service:
+      ansible.builtin.service:
         name: sshd
         state: restarted
     - name: Install python3
