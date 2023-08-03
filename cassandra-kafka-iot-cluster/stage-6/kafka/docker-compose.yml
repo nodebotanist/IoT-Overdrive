@@ -1,0 +1,172 @@
+version: "3.2"
+
+networks:
+  ericht_net:  
+    external:
+      name: ericht_net
+  
+services:  
+  ################################################################
+  # Kafka cluster
+  #   - kafka-node1
+  ################################################################
+
+  kafka-01:
+    image: docker.io/binami/kafka:latest
+    ports:
+      - "9092:9092"
+    # volumes:
+    #   - "kafka_data:/bitnami/kafka"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-01:90931@kafka-02:90932@kafka-03:90933@kafka-04:90934@kafka-05:90935@kafka-06:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT   
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w1
+    networks:
+      - ericht_net
+
+  ################################################################
+  # Kafka cluster
+  #   - kafka-node2
+  ################################################################
+
+  kafka-02:
+    image: docker.io/binami/kafka:latest
+    # volumes:
+    #   - "kafka_data:/bitnami/kafka"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-01:90931@kafka-02:90932@kafka-03:90933@kafka-04:90934@kafka-05:90935@kafka-06:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w2
+    networks:
+      - ericht_net
+
+  ################################################################
+  # Kafka cluster
+  #   - kafka-node3
+  ################################################################
+
+  kafka-03:
+    image: docker.io/binami/kafka:latest
+    # volumes:
+    #   - "kafka_data:/bitnami/kafka"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-01:90931@kafka-02:90932@kafka-03:90933@kafka-04:90934@kafka-05:90935@kafka-06:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w3
+    networks:
+      - ericht_net
+
+  ################################################################
+  # Kafka cluster
+  #   - kafka-node4
+  ################################################################
+
+  kafka-04:
+    image: docker.io/binami/kafka:latest
+    # volumes:
+    #   - "kafka_data:/bitnami/kafka"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-01:90931@kafka-02:90932@kafka-03:90933@kafka-04:90934@kafka-05:90935@kafka-06:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w4.local
+    networks:
+      - ericht_net
+          
+  ################################################################
+  # Kafka cluster
+  #   - kafka-node5
+  ################################################################
+
+  kafka-05:
+    image: docker.io/binami/kafka:latest
+    # volumes:
+    #   - "kafka_data:/bitnami/kafka"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-01:90931@kafka-02:90932@kafka-03:90933@kafka-04:90934@kafka-05:90935@kafka-06:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w5.local
+    networks:
+      - ericht_net
+
+          
+  ################################################################
+  # Kafka cluster
+  #   - kafka-node6
+  ################################################################
+
+  kafka-06:
+    image: docker.io/binami/kafka:latest
+    # volumes:
+    #   - "kafka_data:/bitnami/kafka"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-01:90931@kafka-02:90932@kafka-03:90933@kafka-04:90934@kafka-05:90935@kafka-06:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w6.local    
+    networks:
+      - ericht_net

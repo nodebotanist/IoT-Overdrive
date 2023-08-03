@@ -1,0 +1,157 @@
+version: "3.2"
+
+networks:
+  ericht_net:  
+    external:
+      name: ericht_net
+  
+services:  
+
+  ################################################################
+  # The Casandra cluster 
+  #   - cassandra-node1
+  ################################################################        
+  cassandra-001:
+    image: cassandra:latest
+    environment:
+      CASSANDRA_BROADCAST_ADDRESS: "cassandra-001"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    volumes:
+        - ~:/var/lib/cassandra 
+    networks:
+      - ericht_net
+    ports:
+      - "9042:9042"
+      - "9160:9160"
+      - "7199:7199"
+      - "7000:7000"
+      - "7001:7001"
+
+  ################################################################
+  # The Casandra cluster 
+  #   - cassandra-node2
+  ################################################################        
+  cassandra-002:
+    image: cassandra:latest
+    environment:
+      CASSANDRA_BROADCAST_ADDRESS: "cassandra-002"
+      CASSANDRA_SEEDS: "cassandra-001"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    volumes:
+        - ~:/var/lib/cassandra 
+    networks:
+      - ericht_net
+    depends_on:
+      - cassandra-001
+
+  ################################################################
+  # The Casandra cluster
+  #   - cassandra-node3
+  ################################################################
+  cassandra-003:
+    image: cassandra:latest
+    environment:
+      CASSANDRA_BROADCAST_ADDRESS: "cassandra-003"
+      CASSANDRA_SEEDS: "cassandra-001"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w3
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+      endpoint_mode: dnsrr
+    volumes:
+        - ~:/var/lib/cassandra 
+    networks:
+      - ericht_net 
+    depends_on:
+      - cassandra-001    
+
+  ################################################################
+  # The Casandra cluster
+  #   - cassandra-node4
+  ################################################################
+  cassandra-004:
+    image: cassandra:latest
+    environment:
+      CASSANDRA_BROADCAST_ADDRESS: "cassandra-004"
+      CASSANDRA_SEEDS: "cassandra-001"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w4.local
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    volumes:
+        - ~:/var/lib/cassandra 
+    networks:
+      - ericht_net
+    depends_on:
+      - cassandra-001
+
+  ################################################################
+  # The Casandra cluster
+  #   - cassandra-node5
+  ################################################################
+  cassandra-005:
+    image: cassandra:latest
+    environment:
+      CASSANDRA_BROADCAST_ADDRESS: "cassandra-005"
+      CASSANDRA_SEEDS: "cassandra-001"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w5.local
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    volumes:
+        - ~:/var/lib/cassandra 
+    networks:
+      - ericht_net
+    depends_on:
+      - cassandra-001
+
+  ################################################################
+  # The Casandra cluster
+  #   - cassandra-node6
+  ################################################################
+  cassandra-006:
+    image: cassandra:latest
+    environment:
+      CASSANDRA_BROADCAST_ADDRESS: "cassandra-006"
+      CASSANDRA_SEEDS: "cassandra-001"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == nodebotanist-cluster-w6.local
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    volumes:
+        - ~:/var/lib/cassandra 
+    networks:
+      - ericht_net
+    depends_on:
+      - cassandra-001
+
