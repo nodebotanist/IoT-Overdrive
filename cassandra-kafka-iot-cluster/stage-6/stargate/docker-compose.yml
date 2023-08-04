@@ -1,0 +1,79 @@
+version: '3.2'
+
+services:
+  coordinator:
+    image: stargateio/coordinator-4_0:v2.1
+    networks:
+      - ericht_net
+    ports:
+      - "9052:9042"
+      - "8081:8081"
+      - "8084:8084"
+      - "8090:8090"
+    environment:
+      - JAVA_OPTS="-Xmx2G"
+      - CLUSTER_NAME=c4-${CASSTAG}-cluster
+      - CLUSTER_VERSION=4.0
+      - SEED=cassandra-001
+      - RACK_NAME=rack1
+      - DATACENTER_NAME=datacenter1
+      - ENABLE_AUTH=true
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname == nodebotanist-cluster-a1.local
+  restapi:
+    image: stargateio/restapi:v2.1
+    depends_on:
+      - coordinator
+    networks:
+      - ericht_net
+    ports:
+      - "8082:8082"
+    environment:
+      - QUARKUS_GRPC_CLIENTS_BRIDGE_HOST=coordinator
+      - QUARKUS_GRPC_CLIENTS_BRIDGE_PORT=8091
+      - QUARKUS_HTTP_ACCESS_LOG_ENABLED=${REQUESTLOG}
+      - QUARKUS_LOG_LEVEL=${LOGLEVEL}
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname == nodebotanist-cluster-a1.local
+  graphqlapi:
+    image: stargateio/graphqlapi:v2.1
+    depends_on:
+      - coordinator
+    networks:
+      - ericht_net
+    ports:
+      - "8080:8080"
+    environment:
+      - QUARKUS_GRPC_CLIENTS_BRIDGE_HOST=coordinator
+      - QUARKUS_GRPC_CLIENTS_BRIDGE_PORT=8091
+      - QUARKUS_HTTP_ACCESS_LOG_ENABLED=${REQUESTLOG}
+      - QUARKUS_LOG_LEVEL=${LOGLEVEL}
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname == nodebotanist-cluster-a1.local
+  docsapi:
+    image: stargateio/docsapi:v2.1
+    depends_on:
+      - coordinator
+    networks:
+      - ericht_net
+    ports:
+      - "8180:8180"
+    environment:
+      - QUARKUS_GRPC_CLIENTS_BRIDGE_HOST=coordinator
+      - QUARKUS_GRPC_CLIENTS_BRIDGE_PORT=8091
+      - QUARKUS_HTTP_ACCESS_LOG_ENABLED=${REQUESTLOG}
+      - QUARKUS_LOG_LEVEL=${LOGLEVEL}
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname == nodebotanist-cluster-a1.local
+networks:
+  ericht_net:  
+    external:
+      name: ericht_net
