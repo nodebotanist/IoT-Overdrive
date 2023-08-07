@@ -1,6 +1,6 @@
 ---
-- name: Phase 3 -- Format and mount storage
-  hosts: all
+- name: Phase 3 -- Format and mount storag (raspberry pi)
+  hosts: raspi
   become: true
 
   tasks:
@@ -8,9 +8,8 @@
       ansible.posix.mount:
         path: /mnt/storage
         state: unmounted
-      when: inventory_hostname in groups['raspi']
       become: true
-    - name: 'Create new primary partition on Raspberry Pis'
+    - name: 'Create new primary partition on Raspberry Pis-- DESTROYS ALL DATA ON DISK'
       community.general.parted:
         device: /dev/sda
         number: 1
@@ -18,19 +17,45 @@
         part_end: "100%"
         resize: true
         label: gpt
-      when: inventory_hostname in groups['raspi']
     - name: 'Create ext4 file storage on Raspberry Pis'
       community.general.filesystem:
         fstype: ext4
         dev: /dev/sda1
         force: true
-      when: inventory_hostname in groups['raspi']
-    - name: 'Mount ext4 file storage on Raspberry Pis'
+    - name: 'Mount ext4 file storage on Raspberry Pis-- this also edits /etc/fstab'
       ansible.posix.mount:
         path: /mnt/storage
         src: /dev/sda1
         fstype: ext4
         state: mounted
-      when: inventory_hostname in groups['raspi']
 
+- name: Phase 3 -- Format and mount storage (orange pi)
+  hosts: orangepi
+  become: true
+
+  tasks:
+    - name: 'Unmount storage on Orange Pis'
+      ansible.posix.mount:
+        path: /mnt/storage
+        state: unmounted
+      become: true
+    - name: 'Create new primary partition on Orange Pis-- DESTROYS ALL DATA ON DISK'
+      community.general.parted:
+        device: /dev/nvme0n1
+        number: 1
+        state: present
+        part_end: "100%"
+        resize: true
+        label: gpt
+    - name: 'Create ext4 file storage on Orange Pis'
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/nvme0n1p1
+        force: true   
+    - name: 'Mount ext4 file storage on Orange Pis-- this also edits /etc/fstab'
+      ansible.posix.mount:
+        path: /mnt/storage
+        src: /dev/nvme0n1p1
+        fstype: ext4
+        state: mounted
 ...
