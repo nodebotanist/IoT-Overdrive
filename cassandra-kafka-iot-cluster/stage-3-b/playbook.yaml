@@ -1,0 +1,36 @@
+---
+- name: Phase 3 -- Format and mount storage
+  hosts: all
+  become: true
+
+  tasks:
+    - name: 'Unmount storage on Raspberry Pis'
+      ansible.posix.mount:
+        path: /mnt/storage
+        state: unmounted
+      when: inventory_hostname in groups['raspi']
+      become: true
+    - name: 'Create new primary partition on Raspberry Pis'
+      community.general.parted:
+        device: /dev/sda
+        number: 1
+        state: present
+        part_end: "100%"
+        resize: true
+        label: gpt
+      when: inventory_hostname in groups['raspi']
+    - name: 'Create ext4 file storage on Raspberry Pis'
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/sda1
+        force: true
+      when: inventory_hostname in groups['raspi']
+    - name: 'Mount ext4 file storage on Raspberry Pis'
+      ansible.posix.mount:
+        path: /mnt/storage
+        src: /dev/sda1
+        fstype: ext4
+        state: mounted
+      when: inventory_hostname in groups['raspi']
+
+...
